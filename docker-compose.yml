@@ -11,6 +11,8 @@ services:
     environment:
       - DJANGO_SETTINGS_MODULE=mysite.settings
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+      - UID=${UID}
+      - GID=${GID}
     restart: unless-stopped
 
 volumes:
