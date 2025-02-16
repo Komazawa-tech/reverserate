@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ class_instance.name }}</title>
+    <!-- 既存のCSSに加えて、detail.jsを読み込む -->
+    <link rel="stylesheet" href="{% static 'forms/css/styles.css' %}"/>
+</head>
+<body>
+    <h1>{{ name }}</h1>
+    <p>教師: {{ teacher }}</p>
+    <p>曜日: {{ day_of_week|join:"," }}</p>
+    <p>分野: {{ field|join:"," }}</p>
+
+    <h2>評価を記入してください</h2>
+
+    <form method="post" class="evaluation-form">
+        {% csrf_token %}
+
+        <!-- フォームエラーの表示 -->
+        {% if form.errors %}
+            <div class="form-errors">
+                <ul>
+                    {% for field, errors in form.errors.items %}
+                        <li>{{ field }}: {{ errors|join:', ' }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <!-- 単位(credit) -->
+        <div class="form-group">
+            <label for="id_credit">単位</label>
+            {{ form.credit }}
+        </div>
+
+        <!-- 評価(score) -->
+        <div class="form-group">
+            <label for="id_score">評価</label>
+            {{ form.score }}
+        </div>
+
+        <!-- 宿題(homework) -->
+        <div class="form-group">
+            <label for="id_homework">宿題</label>
+            {{ form.homework }}
+        </div>
+
+        <!-- 説明(explanation) -->
+        <div class="form-group">
+            <label for="id_explanation">説明のわかりやすさ</label>
+            {{ form.explanation }}
+        </div>
+
+        <!-- 熱意(passion) -->
+        <div class="form-group">
+            <label for="id_passion">授業に対する熱意</label>
+            {{ form.passion }}
+        </div>
+
+        <!-- おすすめ度(recommend) -->
+        <div class="form-group">
+            <label for="id_recommend">おすすめ度</label>
+            {{ form.recommend }}
+        </div>
+
+        <!-- 良かった点(GoodComment) -->
+        <div class="form-group">
+            <label for="id_GoodComment">良かった点</label>
+            {{ form.GoodComment }}
+        </div>
+
+        <!-- 悪かった点(BadComment) -->
+        <div class="form-group">
+            <label for="id_BadComment">悪かった点</label>
+            {{ form.BadComment }}
+        </div>
+
+        <!-- その他(OtherComment) -->
+        <div class="form-group">
+            <label for="id_OtherComment">その他</label>
+            {{ form.OtherComment }}
+        </div>
+
+        <button type="submit" class="submit-button">送信</button>
+    </form>
+
+    <!-- detail.js を読み込み -->
+    <script src="{% static 'forms/js/detail.js' %}"></script>
+</body>
+</html>

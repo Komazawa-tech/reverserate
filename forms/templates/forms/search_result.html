@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>授業アンケート検索</title>
+    <!-- CSSファイルを読み込む -->
+    <link rel="stylesheet" href="{% static 'forms/css/styles.css' %}"/>
+  </head>
+  <body>
+    <h1>授業アンケート詳細検索</h1>
+    <!-- 検索フォーム -->
+    <form action="" method="get" class="search-form">
+      <!-- 基本検索フィールド -->
+      <table>
+        <tr>
+          <td><label for="id_class_name">授業名：</label></td>
+          <td><input name="class_name" id="id_class_name" value="{{ request.GET.class_name }}" type="text" /></td>
+        </tr>
+        <tr>
+          <td><label for="id_class_teacher">教員名：</label></td>
+          <td><input name="class_teacher" id="id_class_teacher" value="{{ request.GET.class_teacher }}" type="text" /></td>
+        </tr>
+      </table>
+
+      <!-- 詳細検索の表示/非表示 を切り替えるボタン -->
+      <button type="button" id="toggle-advanced-search" class="toggle-button">詳細検索フィールドを表示</button>
+
+      <!-- 詳細検索フィールド(デフォルト非表示) -->
+      <div id="advanced-search-fields" style="display: none;">
+        <table>
+          <tr>
+            <td><label for="id_class_semester">期間：</label></td>
+            <td>
+              {% for value, label in semester_choices %}
+                <input
+                  type="checkbox"
+                  name="class_semester"
+                  id="semester_{{ value }}"
+                  value="{{ value }}"
+                  {% if value|stringformat:"s" in selected_semesters %}checked{% endif %}
+                />
+                <label for="semester_{{ value }}">{{ label }}</label>
+              {% endfor %}
+            </td>
+          </tr>
+
+          <tr>
+            <td><label for="id_class_period">時間：</label></td>
+            <td>
+              {% for value, label in period_choices %}
+                <input
+                  type="checkbox"
+                  name="class_period"
+                  id="period_{{ value }}"
+                  value="{{ value }}"
+                  {% if value|stringformat:"s" in selected_period %}checked{% endif %}
+                />
+                <label for="period_{{ value }}">{{ label }}</label>
+              {% endfor %}
+            </td>
+          </tr>
+
+          <tr>
+            <td><label for="id_class_day_of_week">曜日：</label></td>
+            <td>
+              {% for value, label in day_of_week_choices %}
+                <input
+                  type="checkbox"
+                  name="class_day_of_week"
+                  id="day_of_week_{{ value }}"
+                  value="{{ value }}"
+                  {% if value|stringformat:"s" in selected_day_of_week %}checked{% endif %}
+                />
+                <label for="day_of_week_{{ value }}">{{ label }}</label>
+              {% endfor %}
+            </td>
+          </tr>
+
+          <tr>
+            <td><label for="id_class_field">分野：</label></td>
+            <td>
+              {% for value, label in field_choices %}
+                <input
+                  type="checkbox"
+                  name="class_field"
+                  id="field_{{ value }}"
+                  value="{{ value }}"
+                  {% if value|stringformat:"s" in selected_field %}checked{% endif %}
+                />
+                <label for="field_{{ value }}">{{ label }}</label>
+              {% endfor %}
+            </td>
+          </tr>
+
+          <tr>
+            <td><label for="id_class_code">コード：</label></td>
+            <td><input name="class_code" id="id_class_code" value="{{ request.GET.class_code }}" type="text" /></td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- 検索ボタン -->
+      <div class="search-btn-container">
+        <button type="submit">検索する</button>
+      </div>
+    </form>
+
+    <!-- 検索結果 -->
+    <h2>検索結果</h2>
+    <table class="result-table">
+      <tr>
+        <th>授業名</th>
+      </tr>
+      {% for class_obj in object_list %}
+      <tr>
+        <td>
+          {% if group_id %}
+          <a href="{% url 'forms:group_classform' id=class_obj.id group_id=group_id %}">{{ class_obj }}</a>
+          {% else %}
+          <a href="{% url 'forms:class_detail' id=class_obj.id %}">{{ class_obj }}</a>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <!-- JSファイルを読み込む -->
+    <script src="{% static 'forms/js/result.js' %}"></script>
+  </body>
+</html>
