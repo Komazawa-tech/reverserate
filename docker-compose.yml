@@ -2,12 +2,12 @@ services:
   web:
     build: .
     container_name: reverserate_web
-    command: gunicorn --bind orange-997.komazawa-u.ac.jp:8000 mysite.wsgi:application
+    command: gunicorn --bind 0.0.0.0:8080 mysite.wsgi:application
     volumes:
       - .:/app
       - static_volume:/app/staticfiles
     ports:
-      - "8081:8000"
+      - "8080:8080"
     environment:
       - DJANGO_SETTINGS_MODULE=mysite.settings
       - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}

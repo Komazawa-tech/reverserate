@@ -19,5 +19,3 @@ RUN pip install --no-cache-dir -r requirements.txt
 # 静的ファイルを収集
 RUN python manage.py collectstatic --noinput
 
-# GunicornでDjangoを起動
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "mysite.wsgi:application"]
