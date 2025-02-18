@@ -2,7 +2,7 @@ services:
   web:
     build: .
     container_name: reverserate_web
-    command: gunicorn --bind 0.0.0.0:8080 mysite.wsgi:application
+    command: [ "/bin/sh", "-c", "gunicorn -w $(($(nproc) * 2 + 1)) --bind 0.0.0.0:8080 mysite.wsgi:application" ]
     volumes:
       - .:/app
       - static_volume:/app/staticfiles
